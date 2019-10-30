@@ -23,11 +23,18 @@ void MidiController<MidiImpl>::loop(){
   auto newNote = this->noteProvider.getNote();
 
   if(newNote != -1){
-    this->midiImpl.sendNoteOn(newNote, volumeProvider.readVolume(), 1);
-    this->cancelNote(currentNote);
-    currentNote = newNote;
+
+    if(newNote != currentNote){
+      this->midiImpl.sendNoteOn(newNote, volumeProvider.readVolume(), 1);
+      this->cancelNote(currentNote);
+      currentNote = newNote;
+    }
+
+    //Send After-touch (dynamic volume change)
+    //this->volumeProvider.sendAfterTouch()
 
     this->effectsProvider.sendEffect();
+
   }else{
     this->cancelPreviousNote();
     currentNote = 0;
@@ -50,4 +57,14 @@ void MidiController<MidiImpl>::cancelNote(int note){
 template<typename MidiImpl>
 MidiImpl& MidiController<MidiImpl>::getMidiImpl(){
   return this->midiImpl;
+}
+
+template<typename MidiImpl>
+void MidiController<MidiImpl>::changeMode(char mode){
+  if(mode == 'A'){
+    this->effectsProvider.changeMode(EffectsProvider<MidiImpl>::Mode::PITCH_BENDING);
+  }
+  if(mode == 'D'){
+    this->effectsProvider.changeMode(EffectsProvider<MidiImpl>::Mode::PORTAMENTO_TIME);
+  }
 }

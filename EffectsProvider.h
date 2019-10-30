@@ -23,6 +23,7 @@ public:
     EffectsProvider(MidiImpl& midiImpl, PingSensor& ping);
 
     void sendEffect();
+    void changeMode(Mode newMode);
 
 private:
     void sendPitchBending();

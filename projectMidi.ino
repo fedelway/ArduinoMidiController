@@ -1,6 +1,7 @@
 #include "controller.h"
 #include <MIDI.h>
 #include "Keypad.h"
+#include "LiquidCrystal.h"
 
 const byte ROWS = 4; //four rows
 const byte COLS = 4; //three columns
@@ -17,6 +18,8 @@ Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
 // Created and binds the MIDI interface to the default hardware Serial port
 MIDI_CREATE_DEFAULT_INSTANCE();
+
+LiquidCrystal lcd(3, 2, 9, 10, 11, 12);
 
 //Create Ping Sensors
 constexpr int echo1 = A1;
@@ -40,11 +43,13 @@ void setup() {
   MIDI.begin(MIDI_CHANNEL_OMNI);  // Listen to all incoming messages
   Serial.begin(115200); //Cambiamos la velocidad del puerto serie
   keypad.addEventListener(keypadEvent); //add an event listener for this keypad
+  lcd.begin(16,2);
+  lcd.print("Hello World");
 }
 
 void loop() {
   //To trigger listeners
-  //char key = keypad.getKey();
+  char key = keypad.getKey();
   
   //Serial.println(analogRead(A5));
 
@@ -54,15 +59,9 @@ void loop() {
 void keypadEvent(KeypadEvent key){
   switch (keypad.getState()){
     case PRESSED:
-      if( isalpha(key) ){
-        int note = 69 + (key - 'A');
-        MIDI.sendNoteOn(note, 127, 1);
-      }
-      break;
-    case RELEASED:
-      if( isalpha(key) ){
-        int note = 69 + (key - 'A');
-        MIDI.sendNoteOff(note, 127, 1);
+      //Serial.println(key);
+      if( isalpha(key)){
+        controller.changeMode(key);
       }
       break;
   }

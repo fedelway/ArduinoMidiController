@@ -29,6 +29,8 @@ public:
   void cancelPreviousNote();
   void cancelNote(int note);
 
+  void changeMode(char mode);
+  
   MidiImpl& getMidiImpl();
 };
 

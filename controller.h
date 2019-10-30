@@ -5,6 +5,9 @@
 #include "pingSensor.h"
 #include "volumeKnob.h"
 #include "MIDI.h"
+#include "NoteProvider.h"
+#include "VolumeProvider.h"
+#include "EffectsProvider.h"
 
 template<typename MidiImpl>
 class MidiController{
@@ -13,7 +16,9 @@ class MidiController{
   MidiImpl& midiImpl;
   PingSensor ping;
   PingSensor ping2;
-  VolumeKnob volumeKnob;
+  NoteProvider noteProvider;
+  VolumeProvider volumeProvider;
+  EffectsProvider<MidiImpl> effectsProvider;
 
 public:
   MidiController(MidiImpl& midi, PingSensor& ping, PingSensor& ping2, int volPin);
@@ -23,9 +28,6 @@ public:
 
   void cancelPreviousNote();
   void cancelNote(int note);
-  void sendDistanceNote(int distance);
-
-  void sendPitchBend();
 
   MidiImpl& getMidiImpl();
 };

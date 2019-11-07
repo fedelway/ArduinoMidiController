@@ -21,7 +21,7 @@ public:
     int readDistance();
 private:
     void fireSensor();
-    void saveValue(int value);
+    void saveValue(unsigned long value);
 };
 
 #endif

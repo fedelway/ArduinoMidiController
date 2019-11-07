@@ -42,7 +42,7 @@ int PingSensor::readDistance()
     return this->readStabilizedValue() / 29 / 2;
 }
 
-void PingSensor::saveValue(int value)
+void PingSensor::saveValue(unsigned long value)
 {
     this->previousReadings[this->currentReading] = value;
     this->currentReading = (currentReading + 1) % numberOfReadings;

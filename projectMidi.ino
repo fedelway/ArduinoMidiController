@@ -49,11 +49,12 @@ void setup() {
 
 void loop() {
   //To trigger listeners
-  char key = keypad.getKey();
+  //char key = keypad.getKey();
   
   //Serial.println(analogRead(A5));
+  Serial.println(ping2.readStabilizedValue());
 
-  controller.loop();
+  //controller.loop();
 }
 
 void keypadEvent(KeypadEvent key){

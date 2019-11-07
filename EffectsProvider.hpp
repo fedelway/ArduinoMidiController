@@ -28,7 +28,9 @@ void EffectsProvider<MidiImpl>::sendEffect()
         return;
     }else if(mode == Mode::PITCH_BENDING){
         this->sendPitchBending();
-    }else this->sendPortamentoTime();
+    }else if(mode == Mode::PORTAMENTO_TIME){
+        this->sendPortamentoTime();
+    }
 }
 
 template<typename MidiImpl>

@@ -28,8 +28,8 @@ unsigned long PingSensor::readStabilizedValue()
 {
     this->readRawValue();
 
-    int acum = 0;
-    int i = 0;
+    unsigned long acum = 0;
+    unsigned long i = 0;
     for(i = 0; i<numberOfReadings && previousReadings[i] != maxValue; i++){
         acum += previousReadings[i];
     }

@@ -37,24 +37,24 @@ MidiController<midi::MidiInterface<HardwareSerial>> controller(
   MIDI, 
   ping, 
   ping2,
-  potPin);
+  potPin,
+  lcd);
 
 void setup() {
   MIDI.begin(MIDI_CHANNEL_OMNI);  // Listen to all incoming messages
   Serial.begin(115200); //Cambiamos la velocidad del puerto serie
   keypad.addEventListener(keypadEvent); //add an event listener for this keypad
   lcd.begin(16,2);
-  lcd.print("Hello World");
+  controller.setup();
 }
 
 void loop() {
   //To trigger listeners
-  //char key = keypad.getKey();
+  char key = keypad.getKey();
   
   //Serial.println(analogRead(A5));
-  Serial.println(ping2.readStabilizedValue());
-
-  //controller.loop();
+  //Serial.println(ping2.readStabilizedValue());
+  controller.loop();
 }
 
 void keypadEvent(KeypadEvent key){

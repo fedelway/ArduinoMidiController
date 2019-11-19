@@ -79,4 +79,8 @@ void MidiController<MidiImpl>::changeMode(char mode){
     this->effectsProvider.changeMode(EffectsProvider<MidiImpl>::Mode::PORTAMENTO_TIME);
     this->screen.writeStateChange("PTIME");
   }
+
+  if(isdigit(mode)){
+    this->noteProvider.setScale(mode - '0');
+  }
 }

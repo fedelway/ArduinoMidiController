@@ -3,13 +3,15 @@
 
 class Scale{
 
-int* distances;
-int length;
+    int* distances;
+    int length;
 
 public:
-    Scale(int* distances, int length);
+    template<typename T, int size>
+    Scale(T (&scale)[size]): distances(scale), length(size){ }
     
     int getNote(int step);
+    int getLength();
 };
 
 #endif //_SCALE_DEFINED_

@@ -29,3 +29,8 @@ void NoteProvider::setScale(int number)
     if(number < scaleCount)
         configuredScale = scales[number];
 }
+
+Scale& NoteProvider::getScale()
+{
+    return configuredScale;
+}

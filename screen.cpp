@@ -25,3 +25,10 @@ void Screen::writeNoteChange(int note)
     lcd.print("Nota: ");
     lcd.print(note);
 }
+
+void Screen::writeScaleChange(const char* scaleName)
+{
+    lcd.home();
+    lcd.print("Escala: ");
+    lcd.print(scaleName);
+}

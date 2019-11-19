@@ -82,5 +82,6 @@ void MidiController<MidiImpl>::changeMode(char mode){
 
   if(isdigit(mode)){
     this->noteProvider.setScale(mode - '0');
+    this->screen.writeScaleChange(this->noteProvider.getScale().getName());
   }
 }

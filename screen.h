@@ -13,6 +13,7 @@ public:
     void writeStateChange(const char* stateName);
     void writeVolumeChange(int vol);
     void writeNoteChange(int note);
+    void writeScaleChange(const char* scaleName);
 };
 
 #endif

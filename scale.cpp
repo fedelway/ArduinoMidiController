@@ -7,5 +7,10 @@ int Scale::getNote(int step)
 
 int Scale::getLength()
 {
-    return length;
+    return this->length;
+}
+
+const char* Scale::getName()
+{
+    return this->scaleName;
 }

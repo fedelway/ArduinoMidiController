@@ -52,8 +52,6 @@ void loop() {
   //To trigger listeners
   char key = keypad.getKey();
   
-  //Serial.println(analogRead(A5));
-  //Serial.println(ping2.readStabilizedValue());
   controller.loop();
 }
 
@@ -61,9 +59,7 @@ void keypadEvent(KeypadEvent key){
   switch (keypad.getState()){
     case PRESSED:
       //Serial.println(key);
-      if( isalpha(key)){
-        controller.changeMode(key);
-      }
+      controller.changeMode(key);
       break;
   }
 }

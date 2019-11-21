@@ -45,7 +45,7 @@ void MidiController<MidiImpl>::loop(){
     currentNote = 0;
   }
 
-  if(newVolume != currentVolume){
+  if(newVolume != currentVolume && newVolume % 2 == 0){
     screen.writeVolumeChange(newVolume);
     currentVolume = newVolume;
   }

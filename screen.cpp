@@ -15,7 +15,8 @@ void Screen::writeStateChange(const char* stateName)
 void Screen::writeVolumeChange(int vol)
 {
     lcd.setCursor(0,1);
-    lcd.print("Vol: ");
+    lcd.print("Vol:    ");
+    lcd.setCursor(5,1);
     lcd.print(vol);
 }
 
@@ -29,6 +30,7 @@ void Screen::writeNoteChange(int note)
 void Screen::writeScaleChange(const char* scaleName)
 {
     lcd.home();
-    lcd.print("Escala: ");
+    lcd.print("Escala:         ");
+    lcd.setCursor(8,0);
     lcd.print(scaleName);
 }

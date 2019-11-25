@@ -19,6 +19,10 @@ Item {
             id: noteText
             fieldName: "Nota: "
         }
+        InfoLabel{
+            id: scaleText
+            fieldName: "Escala: "
+        }
     }
 
     Connections{
@@ -27,6 +31,7 @@ Item {
             volText.change(volume)
             modeText.change(selectedMode)
             noteText.change(currentNote)
+            scaleText.change(currentScale)
         }
     }
 

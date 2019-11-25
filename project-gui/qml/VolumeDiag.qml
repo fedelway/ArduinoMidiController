@@ -30,4 +30,10 @@ Item {
         }
     }
 
+    Connections{
+        target: udpSender
+        onDataChange: {
+            dial.value = volume
+        }
+    }
 }

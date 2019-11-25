@@ -20,7 +20,7 @@ public:
 
 signals:
     void configurationFinished(bool valid);
-    void dataChange(QString selectedMode, int volume, int currentNote);
+    void dataChange(QString selectedMode, int volume, int currentNote, QString currentScale);
 
 public slots:
     void sendVolumeChange(int volume);

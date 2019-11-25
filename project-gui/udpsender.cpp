@@ -1,5 +1,6 @@
 #include "udpsender.h"
 #include <QNetworkDatagram>
+#include "scalenames.h"
 
 UdpSender::UdpSender(QObject *parent) : QObject(parent)
 {
@@ -55,22 +56,30 @@ void UdpSender::sendModeChange(const QString& mode)
 
 void UdpSender::processIncomingData()
 {
+    const size_t dataLength = 9;
     auto datagram = socket.receiveDatagram();
 
-    auto data = datagram.data().data();
+    auto data = datagram.data();
+    auto rawData = data.data();
 
-    if(data[0] != 'I')
+    if(data[0] != 'I' || data.length() != dataLength)
         return;
 
-    QString mode(data[1]);
+    QString mode(rawData[1]);
 
     char volBuf[4] = {0};
-    memcpy(volBuf,data+2,3);
+    memcpy(volBuf,rawData+2,3);
     int volume = atoi(volBuf);
 
     char noteBuf[4] = {0};
-    memcpy(noteBuf,data+5,3);
+    memcpy(noteBuf,rawData+5,3);
     int note = atoi(noteBuf);
 
-    dataChange(mode,volume,note);
+    QString scaleName;
+    size_t scale = (rawData[8] - '0');
+    if(scale < ScaleNames::names.size())
+        scaleName = ScaleNames::names[scale];
+    else scaleName = "";
+
+    dataChange(mode,volume,note,scaleName);
 }

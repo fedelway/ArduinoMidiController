@@ -39,7 +39,8 @@ RESOURCES += #    resources.qrc # uncomment for publishing
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    udpsender.cpp
+    udpsender.cpp \
+    scalenames.cpp
 
 
 android {
@@ -61,7 +62,8 @@ macx {
 }
 
 HEADERS += \
-    udpsender.h
+    udpsender.h \
+    scalenames.h
 
 DISTFILES += \
     qml/StatusInformation.qml \

@@ -8,15 +8,19 @@ class UdpSender : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(bool valid READ isValid)
+
     QUdpSocket socket;
-    QString ip;
-    int port;
+    quint16 controllerPort;
+    QHostAddress controllerAddress;
+
 
 public:
     explicit UdpSender(QObject *parent = nullptr);
+    bool isValid();
 
 signals:
-    void configurationFinished(bool isValid);
+    void configurationFinished(bool valid);
 
 public slots:
     void sendVolumeChange(int volume);

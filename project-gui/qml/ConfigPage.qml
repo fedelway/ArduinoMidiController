@@ -37,8 +37,7 @@ Page{
     Connections {
         target: udpSender
         onConfigurationFinished: {
-            console.log(isValid);
-            if(isValid)
+            if(udpSender.valid)
                 configPage.finished();
         }
 

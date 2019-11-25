@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
     // for PUBLISHING, use the entry point below
     felgo.setMainQmlFileName(QStringLiteral("qml/Main.qml"));
 
-    // add global c++ object to the QML context as a property
      UdpSender* udpSender = new UdpSender();
      engine.rootContext()->setContextProperty("udpSender",udpSender);
 

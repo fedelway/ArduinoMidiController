@@ -11,11 +11,6 @@ Item {
 
     signal volumeChanged(int newVol);
 
-    AppText {
-      text: name;
-      anchors.centerIn: parent;
-    }
-
     Dial{
         id: dial
         anchors.centerIn: parent
@@ -23,7 +18,16 @@ Item {
         from: 0
         to: 127
 
+        implicitWidth: nameText.width + dp(100)
+        implicitHeight: nameText.width + dp(100)
+
         onMoved: volumeChanged(dial.value);
+
+        AppText {
+          id: nameText
+          text: name;
+          anchors.centerIn: parent;
+        }
     }
 
 }

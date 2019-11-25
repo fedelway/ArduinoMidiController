@@ -28,6 +28,9 @@ Page{
             text: "Configurar";
             anchors.horizontalCenter: parent.horizontalCenter;
             onClicked: {
+                //Quito focus de los textfields
+                ipInput.focus = false
+                portInput.focus = false
                 //Configuro el sender
                 udpSender.setConfiguration(ipInput.text,parseInt(portInput.text,10))
             }

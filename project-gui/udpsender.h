@@ -20,7 +20,7 @@ signals:
 
 public slots:
     void sendVolumeChange(int volume);
-    void sendModeChange(QString& mode);
+    void sendModeChange(const QString& mode);
     void setConfiguration(const QString& ip, int port);
 };
 

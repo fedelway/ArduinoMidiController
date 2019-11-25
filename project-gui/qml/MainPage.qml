@@ -8,12 +8,12 @@ Page {
       anchors.centerIn: parent
       VolumeDiag{
           anchors.horizontalCenter: parent.horizontalCenter;
-          onVolumeChanged: console.log(newVol);
+          onVolumeChanged: udpSender.sendVolumeChange(newVol)
       }
       Keypad{
           anchors.horizontalCenter: parent.horizontalCenter
           buttonSize: 30
-          onButtonPressed: console.log(key);
+          onButtonPressed: udpSender.sendModeChange(key);
       }
   }
 }

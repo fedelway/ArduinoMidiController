@@ -20,9 +20,10 @@ void UdpSender::setConfiguration(const QString& ip, int port)
 
 void UdpSender::sendVolumeChange(int volume)
 {
-
+    qDebug() << "Send volume change: " << volume;
 }
-void UdpSender::sendModeChange(QString& mode)
-{
 
+void UdpSender::sendModeChange(const QString& mode)
+{
+    qDebug() << "Send mode change: " << mode;
 }

@@ -62,3 +62,7 @@ macx {
 
 HEADERS += \
     udpsender.h
+
+DISTFILES += \
+    qml/StatusInformation.qml \
+    qml/InfoLabel.qml

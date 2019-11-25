@@ -7,11 +7,12 @@ Page {
   Column{
       anchors.centerIn: parent
       VolumeDiag{
-          anchors.horizontalCenter: parent.horizontalCenter;
           onVolumeChanged: udpSender.sendVolumeChange(newVol)
       }
+      StatusInformation{
+
+      }
       Keypad{
-          anchors.horizontalCenter: parent.horizontalCenter
           buttonSize: 30
           onButtonPressed: udpSender.sendModeChange(key);
       }

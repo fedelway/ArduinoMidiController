@@ -26,12 +26,21 @@ Page{
 
         AppButton{
             text: "Configurar";
+            anchors.horizontalCenter: parent.horizontalCenter;
             onClicked: {
                 //Configuro el sender
-
-                //Marco como finalizado
-                configPage.finished()
+                udpSender.setConfiguration(ipInput.text,parseInt(portInput.text,10))
             }
         }
+    }
+
+    Connections {
+        target: udpSender
+        onConfigurationFinished: {
+            console.log(isValid);
+            if(isValid)
+                configPage.finished();
+        }
+
     }
 }

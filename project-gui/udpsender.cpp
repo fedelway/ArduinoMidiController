@@ -5,6 +5,19 @@ UdpSender::UdpSender(QObject *parent) : QObject(parent)
 
 }
 
+void UdpSender::setConfiguration(const QString& ip, int port)
+{
+    this->ip = ip;
+    this->port = port;
+
+    qDebug() << "IP: " << ip << " port: " << port;
+
+    socket.close();
+    socket.bind(QHostAddress(ip),port);
+
+    configurationFinished(socket.isValid());
+}
+
 void UdpSender::sendVolumeChange(int volume)
 {
 
@@ -12,11 +25,4 @@ void UdpSender::sendVolumeChange(int volume)
 void UdpSender::sendModeChange(QString& mode)
 {
 
-}
-void UdpSender::setConfiguration(QString& ip, int port)
-{
-    this->ip = ip;
-    this->port = port;
-
-    socket.bind(QHostAddress(ip),port);
 }

@@ -8,7 +8,8 @@ Screen::Screen(LiquidCrystal& lcd) : lcd(lcd)
 void Screen::writeStateChange(const char* stateName)
 {
     lcd.home();
-    lcd.print("Modo: ");
+    lcd.print("Modo:           ");
+    lcd.setCursor(7,0);
     lcd.print(stateName);
 }
 

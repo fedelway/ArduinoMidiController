@@ -11,16 +11,18 @@ class NoteProvider {
     PingSensor& sensor;
     Scale& configuredScale;
 
-    static constexpr int scaleCount = 5;
+    static constexpr int scaleCount = 6;
     Scale scales[scaleCount] = {
         Scale(NamedScales::cromatic, "Cromatic"),
         Scale(NamedScales::major, "Major"),
         Scale(NamedScales::minor, "Minor"),
         Scale(NamedScales::armonicMinor, "Arm.Minor"),
         Scale(NamedScales::melodicMinor, "Mel.Minor"),
+        Scale(NamedScales::cromatic, "Cromatic")
     };
 
 public:
+    int scaleNumber;
 
     NoteProvider(PingSensor& sensor);
     int getNote();

@@ -13,3 +13,8 @@ int VolumeProvider::readVolume()
 {
     return analogRead(potPin) / 9;
 }
+
+void VolumeProvider::changeMode(Mode mode)
+{
+    this->mode = mode;
+}

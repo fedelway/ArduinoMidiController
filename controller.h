@@ -2,6 +2,8 @@
 #ifndef _MIDI_CONTROLLER_DEFINED_
 #define _MIDI_CONTROLLER_DEFINED_
 
+#include "WiFiEsp.h"
+#include "WiFiEspUdp.h"
 #include "pingSensor.h"
 #include "volumeKnob.h"
 #include "MIDI.h"
@@ -15,7 +17,12 @@ class MidiController{
 
   int currentNote;
   int currentVolume;
-  
+
+  IPAddress remoteIp;
+  int remotePort;
+  char mode = 'A';
+
+  WiFiEspUDP& udp;
   MidiImpl& midiImpl;
   PingSensor ping;
   PingSensor ping2;
@@ -25,7 +32,7 @@ class MidiController{
   Screen screen;
 
 public:
-  MidiController(MidiImpl& midi, PingSensor& ping, PingSensor& ping2, int volPin, LiquidCrystal& lcd);
+  MidiController(MidiImpl& midi, PingSensor& ping, PingSensor& ping2, int volPin, LiquidCrystal& lcd, WiFiEspUDP& udp);
 
   void setup();
   void loop();
@@ -34,6 +41,9 @@ public:
   void cancelNote(int note);
 
   void changeMode(char mode);
+
+  void receiveInfo();
+  void sendInfo();
   
   MidiImpl& getMidiImpl();
 };

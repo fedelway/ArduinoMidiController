@@ -22,6 +22,7 @@ public:
     VolumeProvider(uint8_t potPin, PingSensor& ping);
 
     int readVolume();
+    void changeMode(Mode mode);
 };
 
 #endif //_VOLUME_PROVIDER_DEFINED_

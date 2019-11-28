@@ -1,19 +1,12 @@
 #include "NoteProvider.h"
+#include "Arduino.h"
 
 constexpr int step = 7;
 constexpr int baseNote = 69;
 constexpr unsigned long minValue = 1000;
 constexpr unsigned long maxValue = 3000;
 
-/*Scale NoteProvider::scales[] = {
-    Scale(NamedScales::cromatic, "Cromatic"),
-    Scale(NamedScales::major, "Major"),
-    Scale(NamedScales::minor, "Minor"),
-    Scale(NamedScales::armonicMinor, "Arm.Minor"),
-    Scale(NamedScales::melodicMinor, "Mel.Minor"),
-};*/
-
-NoteProvider::NoteProvider(PingSensor& sensor) : sensor(sensor), configuredScale(scales[0])
+NoteProvider::NoteProvider(PingSensor& sensor) : sensor(sensor), configuredScale(scales[5])
 {
 
 }
@@ -34,8 +27,10 @@ int NoteProvider::getNote()
 
 void NoteProvider::setScale(int number)
 {
-    if(number < scaleCount)
+    if(number < (scaleCount-1)){
         configuredScale = scales[number];
+        scaleNumber = number;
+    }
 }
 
 Scale& NoteProvider::getScale()

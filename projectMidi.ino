@@ -51,8 +51,8 @@ constexpr int potPin = A5;
 //Create midiController class
 MidiController<midi::MidiInterface<HardwareSerial>> controller(
   MIDI, 
-  ping, 
-  ping2,
+  ping2, 
+  ping,
   potPin,
   lcd,
   udp);
@@ -63,6 +63,7 @@ void setup() {
   keypad.addEventListener(keypadEvent); //add an event listener for this keypad
   lcd.begin(16,2);
 
+/*
   // initialize serial for ESP module
   Serial1.begin(115200);
   WiFi.init(&Serial1);
@@ -97,6 +98,7 @@ void setup() {
   }
 
   //delay(5000);
+*/
 
   controller.setup();
 }
@@ -105,6 +107,9 @@ void loop() {
   //To trigger listeners
   char key = keypad.getKey();
   
+  /*auto value = ping2.readStabilizedValue();
+  Serial.println(value);*/
+
   controller.loop();
 }
 

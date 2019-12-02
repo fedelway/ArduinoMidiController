@@ -1,4 +1,5 @@
 #include "EffectsProvider.h"
+#include "Arduino.h"
 
 template<typename MidiImpl>
 EffectsProvider<MidiImpl>::EffectsProvider(MidiImpl& midiImpl, PingSensor& ping)
@@ -36,11 +37,9 @@ void EffectsProvider<MidiImpl>::sendEffect()
 template<typename MidiImpl>
 void EffectsProvider<MidiImpl>::sendPitchBending()
 {
-    int sensorRead = ping.readRawValue();
+    long sensorRead = ping.readParametrizedValue(MIDI_PITCHBEND_MAX * 2);
 
-    if(sensorRead < MIDI_PITCHBEND_MAX){
-        this->midiImpl.sendPitchBend(sensorRead,1);
-    }
+    this->midiImpl.sendPitchBend( (int)(sensorRead - MIDI_PITCHBEND_MAX), 1 );
 }
 
 template<typename MidiImpl>

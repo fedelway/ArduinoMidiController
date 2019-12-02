@@ -5,12 +5,13 @@
 #include "Arduino.h"
 
 class PingSensor{
-    static constexpr int numberOfReadings = 15;
+    static constexpr int numberOfReadings = 4;
     static constexpr unsigned long maxValue = 999999;
+    static constexpr int sensorTimeOut = 4000;
 
     uint8_t echoPin;
     uint8_t trigPin;
-    unsigned long previousReadings[15] = {maxValue};
+    unsigned long previousReadings[numberOfReadings] = {maxValue};
     uint8_t currentReading;
 
 public:
@@ -18,6 +19,7 @@ public:
 
     unsigned long readRawValue();
     unsigned long readStabilizedValue();
+    int readParametrizedValue(int range);
     int readDistance();
 private:
     void fireSensor();

@@ -25,7 +25,7 @@ void MidiController<MidiImpl>::setup(){
 template<typename MidiImpl>
 void MidiController<MidiImpl>::loop(){
 
-  this->receiveInfo();
+  //this->receiveInfo();
 
   auto newNote = this->noteProvider.getNote();
   auto newVolume = volumeProvider.readVolume();
@@ -54,7 +54,7 @@ void MidiController<MidiImpl>::loop(){
     currentVolume = newVolume;
   }
   
-  this->sendInfo();
+  //this->sendInfo();
 }
 
 template<typename MidiImpl>

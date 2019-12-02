@@ -67,4 +67,6 @@ HEADERS += \
 
 DISTFILES += \
     qml/StatusInformation.qml \
-    qml/InfoLabel.qml
+    qml/InfoLabel.qml \
+    qml/ControllerPage.qml \
+    qml/StatsPage.qml

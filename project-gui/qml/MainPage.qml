@@ -4,17 +4,22 @@ import QtQuick 2.0
 Page {
   title: "Controlador MIDI"
 
-  Column{
-      anchors.centerIn: parent
-      VolumeDiag{
-          onVolumeChanged: udpSender.sendVolumeChange(newVol)
-      }
-      StatusInformation{
+  TabControl {
+    NavigationItem {
+      title: "Controlador"
+      icon: IconType.calculator
+
+      ControllerPage{
 
       }
-      Keypad{
-          buttonSize: 30
-          onButtonPressed: udpSender.sendModeChange(key);
+    }
+    NavigationItem {
+      title: "Estadísticas"
+      icon: IconType.check
+
+      StatsPage{
+
       }
+    }
   }
 }

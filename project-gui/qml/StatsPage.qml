@@ -26,13 +26,6 @@ Page {
                 notesChart.generateChart(notesPlayed)
             }
         }
-        AppButton{
-            text: "xd"
-            onClicked: {
-                //notesChart.generateChart(mostPlayedNote.notesPlayed)
-                mostPlayedNote.addNote(69)
-            }
-        }
 
         ChartView{
             height: dp(250)
@@ -44,12 +37,11 @@ Page {
                 function generateChart(data){
                     clear();
                     data.forEach(function(e){
-                        append(e.note,e.count)}
-                    );
+                        append(e.note,e.count)
+                    });
                 }
             }
         }
-
 
         InfoLabel{
             id: volumeAverage

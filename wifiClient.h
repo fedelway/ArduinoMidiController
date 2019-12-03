@@ -7,9 +7,14 @@
 struct UdpEndPoint{
     IPAddress ip;
     int port;
-}
+};
 
 union ProtocolAction{
+
+    static constexpr char VOLUME_CHANGE = 'V';
+    static constexpr char MODE_CHANGE = 'M';
+    static constexpr char NO_CHANGE = 'N';
+
     char id;
     struct {
         char id;
@@ -23,9 +28,9 @@ union ProtocolAction{
 
 class WifiClient{
 
-    constexpr int listenPort = 8081;
-    constexpr char ssid[] = "DisiLabHotSpot";
-    constexpr char pass[] = "AccessAir";
+    static constexpr int listenPort = 8081;
+    static constexpr const char* ssid = "DisiLabHotSpot";
+    static constexpr const char* pass = "AccessAir";
 
     UdpEndPoint remoteEndpoint;
     WiFiEspUDP udpClient;

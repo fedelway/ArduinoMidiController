@@ -5,12 +5,6 @@
 #include "Keypad.h"
 #include "LiquidCrystal.h"
 
-#ifdef _ESPLOGLEVEL_
-#undef _ESPLOGLEVEL_
-#endif
-
-#define _ESPLOGLEVEL_ 0
-
 const byte ROWS = 4; //four rows
 const byte COLS = 4; //three columns
 char keys[ROWS][COLS] = {
@@ -54,8 +48,7 @@ MidiController<midi::MidiInterface<HardwareSerial>> controller(
   ping2, 
   ping,
   potPin,
-  lcd,
-  udp);
+  lcd);
 
 void setup() {
   MIDI.begin(MIDI_CHANNEL_OMNI);  // Listen to all incoming messages

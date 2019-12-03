@@ -27,17 +27,31 @@ Page {
             }
         }
 
+        AppButton{
+            onClicked: mostPlayedNote.addNote(69);
+        }
+
         ChartView{
             height: dp(250)
             width: dp(250)
+            legend.visible: true
+            antialiasing: true
 
             PieSeries{
                 id: notesChart
+                holeSize: 0.25
 
                 function generateChart(data){
                     clear();
                     data.forEach(function(e){
-                        append(e.note,e.count)
+                        var slice = find(e.note);
+
+                        if(slice === null){
+                            append(e.note,e.count).labelVisible = true;
+                        }else{
+                            slice.value = e.count;
+                        }
+
                     });
                 }
             }

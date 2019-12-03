@@ -14,10 +14,7 @@ void WifiClient::setup()
     // Check for the presence of the shield
     bool wifiPresent = true;
     if (WiFi.status() == WL_NO_SHIELD) {
-        //Serial.println("WiFi not present");
         wifiPresent = false;
-        lcd.home();
-        lcd.print("NO WIFI");
     }
     
     // attempt to connect to WiFi network
@@ -26,7 +23,7 @@ void WifiClient::setup()
 
         if(wifiStatus == WL_CONNECTED){
             localIp = WiFi.localIP();
-            udp.begin(listenPort);
+            udpClient.begin(listenPort);
         }
     }
 }
@@ -39,6 +36,12 @@ IPAddress WifiClient::getIp()
 ProtocolAction WifiClient::receiveInfo()
 {
     ProtocolAction retValue;
+
+    if(wifiStatus != WL_CONNECTED){
+        retValue.id = 'N';
+        return retValue;
+    }
+
     auto length = udpClient.parsePacket();
 
     if(length != 0){
@@ -47,24 +50,24 @@ ProtocolAction WifiClient::receiveInfo()
 
         char id = udpClient.read();
 
-        if(id == 'V'){
+        if(id == ProtocolAction::VOLUME_CHANGE){
             char buf[4];
-            udp.read(buf,3);
+            udpClient.read(buf,3);
             buf[3] = '\0';
 
             int vol = atoi(buf);
             
-            retValue.id = 'V';
+            retValue.id = ProtocolAction::VOLUME_CHANGE;
             retValue.changeVolume.volume = vol;
         }
-        if(id == 'M'){
+        if(id == ProtocolAction::MODE_CHANGE){
             char mode = udpClient.read();
             
-            retValue.id = 'M';
-            retValue.changeMode.mode = 'M';
+            retValue.id = ProtocolAction::MODE_CHANGE;
+            retValue.changeMode.mode = mode;
         }
     }else{
-        retValue.id = 'N';
+        retValue.id = ProtocolAction::NO_CHANGE;
     }
 
     return retValue;

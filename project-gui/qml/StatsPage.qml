@@ -36,13 +36,13 @@ Page {
             width: dp(250)
             legend.visible: true
             antialiasing: true
+            animationOptions: ChartView.AllAnimations
 
             PieSeries{
                 id: notesChart
                 holeSize: 0.25
 
                 function generateChart(data){
-                    clear();
                     data.forEach(function(e){
                         var slice = find(e.note);
 

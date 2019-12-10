@@ -1,6 +1,5 @@
 #include "controller.h"
-
-constexpr int step = 7;
+#include "Arduino.h"
 
 template<typename MidiImpl>
 MidiController<MidiImpl>::MidiController(MidiImpl& midiImpl,PingSensor& ping,PingSensor& ping2, int volPin, LiquidCrystal& lcd) 
@@ -8,12 +7,14 @@ MidiController<MidiImpl>::MidiController(MidiImpl& midiImpl,PingSensor& ping,Pin
   ping(ping),
   ping2(ping2),
   noteProvider(ping),
-  volumeProvider(volPin, ping2),
-  effectsProvider(midiImpl, ping2),
-  screen(lcd)
+  volumeProvider(volPin, ping2, midiImpl),
+  effectsProvider(midiImpl, ping2, volPin),
+  screen(lcd),
+  wifiClient(lcd)
 {
   this->currentNote = 0;
   this->currentVolume = 0;
+  this->cancelCount = 0;
 }
 
 template<typename MidiImpl>
@@ -31,23 +32,28 @@ void MidiController<MidiImpl>::loop(){
   auto newVolume = volumeProvider.readVolume();
 
   if(newNote != -1){
-
+    cancelCount = 0;
     if(newNote != currentNote){
       this->midiImpl.sendNoteOn(newNote,newVolume, 1);
+      delay(25);
       this->cancelNote(currentNote);
       currentNote = newNote;
       this->screen.writeNoteChange(newNote);
     }
 
     //Send After-touch (dynamic volume change)
-    //this->volumeProvider.sendAfterTouch();
-
-    this->effectsProvider.sendEffect();
-
+    this->volumeProvider.sendAfterTouch();
   }else{
-    this->cancelPreviousNote();
-    currentNote = 0;
+    cancelCount++;
+
+    if(cancelCount >= CANCEL_NOTE_COUNT_REQUIRED){
+      this->cancelPreviousNote();
+      currentNote = 0;
+      cancelCount = 0;
+    }
   }
+
+  this->effectsProvider.sendEffect();
 
   if(newVolume != currentVolume && newVolume % 2 == 0){
     screen.writeVolumeChange(newVolume);
@@ -79,18 +85,16 @@ template<typename MidiImpl>
 void MidiController<MidiImpl>::changeMode(char mode){
   if(mode == 'A'){
     this->effectsProvider.changeMode(EffectsProvider<MidiImpl>::Mode::PITCH_BENDING);
-    this->volumeProvider.changeMode(VolumeProvider::Mode::CONSTANT);
+    this->volumeProvider.changeMode(VolumeProvider<MidiImpl>::Mode::CONSTANT);
     this->screen.writeStateChange("PBEND");
   }
   if(mode == 'B'){
-    this->effectsProvider.changeMode(EffectsProvider<MidiImpl>::Mode::NONE);
-    this->volumeProvider.changeMode(VolumeProvider::Mode::MODULATED);
+    this->effectsProvider.changeMode(EffectsProvider<MidiImpl>::Mode::PITCH_BENDING_POT);
+    this->volumeProvider.changeMode(VolumeProvider<MidiImpl>::Mode::MODULATED);
     this->screen.writeStateChange("VOLMOD");
   }
-  if(mode == 'D'){
-    this->effectsProvider.changeMode(EffectsProvider<MidiImpl>::Mode::PORTAMENTO_TIME);
-    this->volumeProvider.changeMode(VolumeProvider::Mode::CONSTANT);
-    this->screen.writeStateChange("PTIME");
+  if(mode == '*'){
+    this->screen.writeIpAddress(this->wifiClient.getIp());
   }
 
   if(isdigit(mode)){

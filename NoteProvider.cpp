@@ -2,11 +2,11 @@
 #include "Arduino.h"
 
 constexpr int step = 7;
-constexpr int baseNote = 69;
+constexpr int baseNote = 57;
 constexpr unsigned long minValue = 1000;
 constexpr unsigned long maxValue = 3000;
 
-NoteProvider::NoteProvider(PingSensor& sensor) : sensor(sensor), configuredScale(scales[5])
+NoteProvider::NoteProvider(PingSensor& sensor) : sensor(sensor), scaleNumber(0), configuredScale(scales[5])
 {
 
 }

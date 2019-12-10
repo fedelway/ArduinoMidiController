@@ -14,6 +14,9 @@
 template<typename MidiImpl>
 class MidiController{
 
+  static constexpr int CANCEL_NOTE_COUNT_REQUIRED = 20;
+
+  int cancelCount;
   int currentNote;
   int currentVolume;
 
@@ -25,7 +28,7 @@ class MidiController{
   PingSensor ping;
   PingSensor ping2;
   NoteProvider noteProvider;
-  VolumeProvider volumeProvider;
+  VolumeProvider<MidiImpl> volumeProvider;
   EffectsProvider<MidiImpl> effectsProvider;
   Screen screen;
   WifiClient wifiClient;

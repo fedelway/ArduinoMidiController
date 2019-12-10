@@ -10,7 +10,7 @@ class EffectsProvider{
 public:
     enum class Mode{
         PITCH_BENDING,
-        PORTAMENTO_TIME,
+        PITCH_BENDING_POT,
         NONE
     };
 
@@ -18,16 +18,17 @@ private:
     MidiImpl& midiImpl;
     PingSensor& ping;
     Mode mode;
+    uint8_t potPin;
 
 public:
-    EffectsProvider(MidiImpl& midiImpl, PingSensor& ping);
+    EffectsProvider(MidiImpl& midiImpl, PingSensor& ping, uint8_t potPin);
 
     void sendEffect();
     void changeMode(Mode newMode);
 
 private:
     void sendPitchBending();
-    void sendPortamentoTime();
+    void sendPotPitchBending();
 };
 
 #include "EffectsProvider.hpp"

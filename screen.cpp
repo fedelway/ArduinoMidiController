@@ -35,3 +35,11 @@ void Screen::writeScaleChange(const char* scaleName)
     lcd.setCursor(8,0);
     lcd.print(scaleName);
 }
+
+void Screen::writeIpAddress(const IPAddress& ip)
+{
+    lcd.home();
+    lcd.print("                ");
+    lcd.home();
+    lcd.print(ip);
+}

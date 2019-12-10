@@ -1,5 +1,3 @@
-#include "WiFiEsp.h"
-#include "WiFiEspUdp.h"
 #include "controller.h"
 #include <MIDI.h>
 #include "Keypad.h"
@@ -17,14 +15,6 @@ byte rowPins[ROWS] = {52, 53, 50, 51}; //connect to the row pinouts of the keypa
 byte colPins[COLS] = {47, 46, 45, 44}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
-
-// Create WIFI instance
-char ssid[] = "DisiLabHotSpot";   // your network SSID (name)
-char pass[] = "AccessAir";        // your network password
-// A UDP instance to let us send and receive packets over UDP
-WiFiEspUDP udp;
-int wifiStatus = WL_IDLE_STATUS;     // the Wifi radio's status
-int localPort = 8081;
 
 // Created and binds the MIDI interface to the default hardware Serial port
 MIDI_CREATE_DEFAULT_INSTANCE();
@@ -53,45 +43,11 @@ MidiController<midi::MidiInterface<HardwareSerial>> controller(
 void setup() {
   MIDI.begin(MIDI_CHANNEL_OMNI);  // Listen to all incoming messages
   Serial.begin(115200); //Cambiamos la velocidad del puerto serie
-  keypad.addEventListener(keypadEvent); //add an event listener for this keypad
   lcd.begin(16,2);
 
-/*
-  // initialize serial for ESP module
-  Serial1.begin(115200);
-  WiFi.init(&Serial1);
-  
-  // check for the presence of the shield
-  bool wifiPresent = true;
-  if (WiFi.status() == WL_NO_SHIELD) {
-    //Serial.println("WiFi not present");
-    wifiPresent = false;
-    lcd.home();
-    lcd.print("NO WIFI");
-  }
-  
-  // attempt to connect to WiFi network
-  while ( wifiStatus != WL_CONNECTED && wifiPresent) {
-    //Serial.print("Attempting to connect to WPA SSID: ");
-    Serial.println(ssid);
-    // Connect to WPA/WPA2 network
-    wifiStatus = WiFi.begin(ssid, pass);
+  testComponents();
 
-    if(wifiStatus == WL_CONNECTED){
-      // you're connected now, so print out the data
-      //Serial.println("You're connected to the network");
-      
-      udp.begin(localPort);
-
-      IPAddress ip = WiFi.localIP();
-      Serial.println(ip);
-      lcd.home();
-      lcd.print(ip);
-    }
-  }
-
-  //delay(5000);
-*/
+  keypad.addEventListener(keypadEvent); //add an event listener for this keypad
 
   controller.setup();
 }
@@ -99,9 +55,6 @@ void setup() {
 void loop() {
   //To trigger listeners
   char key = keypad.getKey();
-  
-  /*auto value = ping2.readStabilizedValue();
-  Serial.println(value);*/
 
   controller.loop();
 }
@@ -111,6 +64,74 @@ void keypadEvent(KeypadEvent key){
     case PRESSED:
       //Serial.println(key);
       controller.changeMode(key);
+      break;
+  }
+}
+
+void testComponents()
+{
+  lcd.home();
+  lcd.print("test left ping");
+  while(true){
+    auto value = ping.readParametrizedValue(10);
+    if(value != -1)
+      break;
+  }
+
+  lcd.home();
+  lcd.print("test right ping");
+  while(true){
+    auto value = ping2.readParametrizedValue(10);
+    if(value != -1)
+      break;
+  }
+
+  lcd.home();
+  lcd.print("               ");
+  lcd.home();
+  lcd.print("test knob");
+  {
+    auto initialValue = analogRead(potPin);
+    while(true){
+      auto newValue = analogRead(potPin);
+
+      auto diff = newValue > initialValue ? newValue - initialValue : initialValue - newValue;
+      if( diff > 10 )
+        break;
+    }
+  }
+
+  lcd.home();
+  lcd.print("test keypad");
+  lcd.setCursor(0,1);
+  lcd.print("Press: ");
+  
+  auto offset = strlen("Press: ");
+  testAndPrint('1',offset);
+  testAndPrint('5',offset);
+  testAndPrint('9',offset);
+  testAndPrint('D',offset);
+
+  lcd.clear();
+  lcd.print("TEST OK");
+  lcd.setCursor(0,1);
+  lcd.print("Press A to end");
+  testKey('A');
+  lcd.clear();
+}
+
+void testAndPrint(char key, int offset)
+{
+  lcd.setCursor(offset, 1);
+  lcd.print(key);
+  testKey(key);
+}
+
+void testKey(char key)
+{
+  while(true){
+    auto pressedKey = keypad.getKey();
+    if(pressedKey == key)
       break;
   }
 }

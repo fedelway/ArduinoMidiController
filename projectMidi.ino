@@ -45,7 +45,7 @@ void setup() {
   Serial.begin(115200); //Cambiamos la velocidad del puerto serie
   lcd.begin(16,2);
 
-  testComponents();
+  //testComponents();
 
   keypad.addEventListener(keypadEvent); //add an event listener for this keypad
 
@@ -62,7 +62,6 @@ void loop() {
 void keypadEvent(KeypadEvent key){
   switch (keypad.getState()){
     case PRESSED:
-      //Serial.println(key);
       controller.changeMode(key);
       break;
   }
@@ -71,7 +70,7 @@ void keypadEvent(KeypadEvent key){
 void testComponents()
 {
   lcd.home();
-  lcd.print("test left ping");
+  lcd.print("test right ping");
   while(true){
     auto value = ping.readParametrizedValue(10);
     if(value != -1)
@@ -79,7 +78,7 @@ void testComponents()
   }
 
   lcd.home();
-  lcd.print("test right ping");
+  lcd.print("test left ping");
   while(true){
     auto value = ping2.readParametrizedValue(10);
     if(value != -1)

@@ -97,7 +97,7 @@ Item {
 
         Row{
             AppButton{
-                text: "#"
+                text: "*"
                 minimumHeight: buttonSize
                 minimumWidth: buttonSize
                 onClicked: keypad.buttonPressed(text);
@@ -109,7 +109,7 @@ Item {
                 onClicked: keypad.buttonPressed(text);
             }
             AppButton{
-                text: "*"
+                text: "#"
                 minimumHeight: buttonSize
                 minimumWidth: buttonSize
                 onClicked: keypad.buttonPressed(text);

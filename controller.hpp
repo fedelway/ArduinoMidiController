@@ -33,7 +33,7 @@ void MidiController<MidiImpl>::loop(){
 
   if(newNote != -1){
     cancelCount = 0;
-    if(newNote != currentNote){
+    if(newNote != currentNote && newNote != -2){
       this->midiImpl.sendNoteOn(newNote,newVolume, 1);
       delay(25);
       this->cancelNote(currentNote);
@@ -61,7 +61,6 @@ void MidiController<MidiImpl>::loop(){
   }
   
   wifiClient.sendInfo(this->mode,this->currentVolume,this->currentNote,noteProvider.scaleNumber);
-  //this->sendInfo();
 }
 
 template<typename MidiImpl>

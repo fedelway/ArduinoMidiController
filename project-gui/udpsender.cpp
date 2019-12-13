@@ -62,6 +62,8 @@ void UdpSender::processIncomingData()
     auto data = datagram.data();
     auto rawData = data.data();
 
+    qDebug() << "Received Data: " << data;
+
     if(data[0] != 'I' || data.length() != dataLength)
         return;
 

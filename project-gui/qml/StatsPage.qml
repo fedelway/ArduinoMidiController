@@ -8,7 +8,7 @@ Page {
         InfoLabel{
             id: mostPlayedNote
             fieldName: "Nota más tocada: "
-            property var notesPlayed : [{note:69,count:10},{note:71,count:17}];
+            property var notesPlayed : [];
             function addNote(note){
                 let noteAcc = notesPlayed.filter(v => v.note === note);
 
@@ -27,13 +27,9 @@ Page {
             }
         }
 
-        AppButton{
-            onClicked: mostPlayedNote.addNote(69);
-        }
-
         ChartView{
             height: dp(250)
-            width: dp(250)
+            width: Math.min( dp(700), parent.parent.width * 0.8)
             legend.visible: true
             antialiasing: true
             animationOptions: ChartView.AllAnimations
@@ -44,6 +40,10 @@ Page {
 
                 function generateChart(data){
                     data.forEach(function(e){
+
+                        if(e.note == 0)
+                            return;
+
                         var slice = find(e.note);
 
                         if(slice === null){
@@ -60,11 +60,16 @@ Page {
         InfoLabel{
             id: volumeAverage
             fieldName: "Volumen usual: "
+            property var maxValues : 999999
+            property var values : []
             property var avgData : ({sum: 0, count: 0});
             function addValue(value){
-                avgData.sum += value;
-                avgData.count++;
-                change(avgData.sum / avgData.count)
+                values.push(value);
+
+                if(values.length > maxValues)
+                    values.shift();
+
+                change(Math.floor( values.reduce( (acc, val) => acc + val ) / values.length ));
             }
         }
     }

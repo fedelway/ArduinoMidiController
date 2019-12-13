@@ -8,7 +8,7 @@
 
 struct UdpEndPoint{
     IPAddress ip;
-    int port;
+    uint16_t port;
 };
 
 union ProtocolAction{

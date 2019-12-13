@@ -1,6 +1,8 @@
 #include "wifiClient.h"
 #include "Arduino.h" //For Serial Access
 
+//#define LOG_PARSEPACKET_TIME
+
 WifiClient::WifiClient(LiquidCrystal& lcd) : lcd(lcd), lastSentTime(0), lastReceivedTime(0), connected(false)
 {
     this->remoteEndpoint.port = 0;
@@ -76,21 +78,26 @@ ProtocolAction WifiClient::receiveInfo()
 
     auto now = millis();
     
-    if( (now - this->lastReceivedTime) < 100 && !received)
+    /*if( (now - this->lastReceivedTime) < 100 && !received)
         return;
-    this->lastReceivedTime = now;
+    this->lastReceivedTime = now;*/
 
     auto start = millis();
     auto length = udpClient.parsePacket();
     auto end = millis();
-    
+
+#ifdef LOG_PARSEPACKET_TIME
     Serial.print("Parse packet tomo: ");
     Serial.print(end-start);
     Serial.print("Length: ");
     Serial.println(length);
+#endif
 
     if(length != 0){
         received = true;
+
+        // If remote port is incorrect check this issue: https://github.com/bportaluri/WiFiEsp/issues/119
+        // Sometimes the port is missing the first digit
         this->remoteEndpoint.ip = udpClient.remoteIP();
         this->remoteEndpoint.port = udpClient.remotePort();
 
@@ -136,11 +143,7 @@ void WifiClient::sendInfo(char mode, int volume, int note, int scaleNumber)
 
     char message[10] = {0};
 
-    Serial.println("Llegue a armar mensaje");
-
     sprintf(message,"I%c%03.3i%03.3i%1.1i",mode,volume,note,scaleNumber);
-
-    Serial.println(message);
 
     udpClient.beginPacket(remoteEndpoint.ip, remoteEndpoint.port);
     udpClient.write(message,9);

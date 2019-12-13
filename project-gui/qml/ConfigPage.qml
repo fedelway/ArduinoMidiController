@@ -14,6 +14,7 @@ Page{
             id: ipInput
             borderWidth: 1
             showClearButton: true
+            width: Math.min( configPage.width * 0.7, dp(200) )
             placeholderText: "Dirección IP"
         }
 
@@ -21,6 +22,7 @@ Page{
             id: portInput
             borderWidth: 1
             showClearButton: true
+            width: Math.min( configPage.width * 0.7, dp(200) )
             placeholderText: "Puerto"
         }
 

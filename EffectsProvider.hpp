@@ -36,6 +36,8 @@ void EffectsProvider<MidiImpl>::sendPitchBending()
 
     if(sensorRead != -1){
         this->midiImpl.sendPitchBend( (int)(sensorRead - MIDI_PITCHBEND_MAX), 1 );
+    }else{
+        this->midiImpl.sendPitchBend(0, 1);
     }
 }
 

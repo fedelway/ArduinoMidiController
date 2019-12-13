@@ -21,7 +21,14 @@ Item {
         implicitWidth: nameText.width + dp(100)
         implicitHeight: nameText.width + dp(100)
 
-        onMoved: volumeChanged(dial.value);
+        property var myVal: 0
+        onMoved: {
+            let floorValue = Math.floor(dial.value);
+            if(floorValue !== myVal){
+                myVal = floorValue;
+                volumeChanged(myVal);
+            }
+        }
 
         AppText {
           id: nameText

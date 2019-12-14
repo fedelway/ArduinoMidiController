@@ -101,6 +101,13 @@ void MidiController<MidiImpl>::changeMode(char mode){
     this->screen.writeScaleChange(this->noteProvider.getScale().getName());
   }
 
+  if(mode == '7'){
+    this->noteProvider.decrementBaseNote();
+  }
+  if(mode == '8'){
+    this->noteProvider.incrementBaseNote();
+  }
+
   this->mode = mode;
 }
 

@@ -20,6 +20,7 @@ class NoteProvider {
         Scale(NamedScales::melodicMinor, "Mel.Minor"),
         Scale(NamedScales::cromatic, "Cromatic")
     };
+    int baseNote;
 
 public:
     int scaleNumber;
@@ -28,6 +29,8 @@ public:
     int getNote();
     void setScale(int scaleNumber);
     Scale& getScale();
+    void incrementBaseNote();
+    void decrementBaseNote();
 };
 
 #endif //_NOTE_PROVIDER_DEFINED_

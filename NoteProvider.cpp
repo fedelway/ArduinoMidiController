@@ -2,12 +2,11 @@
 #include "Arduino.h"
 
 constexpr int step = 7;
-constexpr int baseNote = 57;
 constexpr unsigned long minValue = 1000;
 constexpr unsigned long maxValue = 3000;
 constexpr unsigned long noValueRange = 150;
 
-NoteProvider::NoteProvider(PingSensor& sensor) : sensor(sensor), scaleNumber(0), configuredScale(scales[5])
+NoteProvider::NoteProvider(PingSensor& sensor) : sensor(sensor), scaleNumber(0), configuredScale(scales[5]), baseNote(57)
 {
 
 }
@@ -60,4 +59,16 @@ void NoteProvider::setScale(int number)
 Scale& NoteProvider::getScale()
 {
     return configuredScale;
+}
+
+void NoteProvider::incrementBaseNote()
+{
+    if(baseNote < 127)
+        baseNote++;
+}
+
+void NoteProvider::decrementBaseNote()
+{
+    if(baseNote > 0)
+        baseNote--;
 }

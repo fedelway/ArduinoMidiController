@@ -11,6 +11,8 @@ public:
     enum class Mode{
         PITCH_BENDING,
         PITCH_BENDING_POT,
+        CC_104,     //Sends CC 104 messages
+        CC_105,     //Sends CC 105 messages
         NONE
     };
 

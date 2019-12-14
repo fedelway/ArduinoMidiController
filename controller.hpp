@@ -87,26 +87,36 @@ void MidiController<MidiImpl>::changeMode(char mode){
     this->volumeProvider.changeMode(VolumeProvider<MidiImpl>::Mode::CONSTANT);
     this->screen.writeStateChange("PBEND");
   }
-  if(mode == 'B'){
+  else if(mode == 'B'){
     this->effectsProvider.changeMode(EffectsProvider<MidiImpl>::Mode::PITCH_BENDING_POT);
     this->volumeProvider.changeMode(VolumeProvider<MidiImpl>::Mode::MODULATED);
     this->screen.writeStateChange("VOLMOD");
   }
-  if(mode == '*'){
+  else if(mode == 'C'){
+    this->effectsProvider.changeMode(EffectsProvider<MidiImpl>::Mode::CC_104);
+    this->volumeProvider.changeMode(VolumeProvider<MidiImpl>::Mode::CONSTANT);
+    this->screen.writeStateChange("CUSTOM_1");
+  }
+  else if(mode == 'D'){
+    this->effectsProvider.changeMode(EffectsProvider<MidiImpl>::Mode::CC_105);
+    this->volumeProvider.changeMode(VolumeProvider<MidiImpl>::Mode::CONSTANT);
+    this->screen.writeStateChange("CUSTOM_2");
+  }
+  else if(mode == '*'){
     this->screen.writeIpAddress(this->wifiClient.getIp());
   }
-
-  if(isdigit(mode)){
+  else if(mode == '7'){
+    this->noteProvider.decrementBaseNote();
+  }
+  else if(mode == '8'){
+    this->noteProvider.incrementBaseNote();
+  }
+  else if(isdigit(mode)){
     this->noteProvider.setScale(mode - '0');
     this->screen.writeScaleChange(this->noteProvider.getScale().getName());
   }
 
-  if(mode == '7'){
-    this->noteProvider.decrementBaseNote();
-  }
-  if(mode == '8'){
-    this->noteProvider.incrementBaseNote();
-  }
+  
 
   this->mode = mode;
 }

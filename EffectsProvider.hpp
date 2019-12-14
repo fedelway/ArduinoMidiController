@@ -27,6 +27,17 @@ void EffectsProvider<MidiImpl>::sendEffect()
     }else if(mode == Mode::PITCH_BENDING_POT){
         this->sendPotPitchBending();
     }
+    else if(mode == Mode::CC_104){
+        auto sensorRead = ping.readParametrizedValue(127);
+
+        if(sensorRead != -1)
+            this->midiImpl.sendControlChange(104,sensorRead,1);
+    }else if(mode == Mode::CC_105){
+        auto sensorRead = ping.readParametrizedValue(127);
+
+        if(sensorRead != -1)
+            this->midiImpl.sendControlChange(105,sensorRead,1);
+    }
 }
 
 template<typename MidiImpl>

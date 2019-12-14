@@ -74,6 +74,7 @@ template<typename MidiImpl>
 void VolumeProvider<MidiImpl>::applyAppVolume(int newVol)
 {
     this->currentVolume = newVol;
-    this->previousMode = this->mode;
+    if(this->mode != Mode::APP)
+        this->previousMode = this->mode;
     this->mode = Mode::APP;
 }

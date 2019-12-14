@@ -115,6 +115,7 @@ void MidiController<MidiImpl>::receiveInfo()
       this->changeMode(info.changeMode.mode);
     }
     if(info.id == ProtocolAction::VOLUME_CHANGE){
-      this->currentVolume = info.changeVolume.volume;
+      this->volumeProvider.applyAppVolume(info.changeVolume.volume);
+      //this->currentVolume = info.changeVolume.volume;
     }
 }

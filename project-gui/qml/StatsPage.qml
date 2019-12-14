@@ -36,7 +36,7 @@ FlickablePage {
             width: Math.min( dp(700), parent.parent.width * 0.8)
             legend.visible: true
             antialiasing: true
-            //animationOptions: ChartView.AllAnimations
+            animationOptions: ChartView.AllAnimations
 
             PieSeries{
                 id: notesChart
@@ -96,13 +96,13 @@ FlickablePage {
                 }
                 property int actualCount : 0
                 function addValue(val){
-                    if(volumeSeries.count > 100){
+                    if(actualCount > 100){
                         removePoints(0,1);
                         axisX.min++;
                         axisX.max++;
                     }
                     actualCount++;
-                    append(actualCount,val);
+                    volumeSeries.append(actualCount,val);
                 }
             }
         }
@@ -113,7 +113,7 @@ FlickablePage {
         target: udpSender
         onDataChange: {
             volumeAverage.addValue(volume)
-            volumeSeries.append(volumeSeries.count,volume)
+            volumeSeries.addValue(volume)
             mostPlayedNote.addNote(currentNote)
         }
     }

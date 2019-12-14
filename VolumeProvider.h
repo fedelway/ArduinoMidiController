@@ -10,7 +10,8 @@ class VolumeProvider{
 public:
     enum class Mode{
         CONSTANT,
-        MODULATED
+        MODULATED,
+        APP
     };
 
 private:
@@ -19,6 +20,8 @@ private:
     PingSensor& ping;
     MidiImpl& midiImpl;
     int currentVolume;
+    int analogVolume;
+    Mode previousMode;
 
 public:
 
@@ -27,6 +30,7 @@ public:
     int readVolume();
     void sendAfterTouch();
     void changeMode(Mode mode);
+    void applyAppVolume(int newVol);
 };
 
 #include "VolumeProvider.hpp"

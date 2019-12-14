@@ -18,12 +18,35 @@ int VolumeProvider<MidiImpl>::readVolume()
     if(mode == Mode::CONSTANT){
         auto read = analogRead(potPin);
         currentVolume = map(read,0,1023,0,127);
+        analogVolume = currentVolume;
     }
     else if(mode == Mode::MODULATED){
         auto vol = ping.readParametrizedValue(127);
         
         if(vol != -1)
             currentVolume = vol;
+        analogVolume = currentVolume;
+    }
+    // If mode is set to APP check if the volume changed to see if mode should change back to selected mode
+    else if(mode == Mode::APP){
+        if(previousMode == Mode::CONSTANT){
+            auto read = analogRead(potPin);
+            auto newVol = map(read,0,1023,0,127);
+            if(newVol > (analogVolume+2) || newVol < (analogVolume-2) ){
+                this->mode = Mode::CONSTANT;
+                currentVolume = newVol;
+                analogVolume = newVol;
+            }
+        }
+        if(previousMode == Mode::MODULATED){
+            auto newVol = ping.readParametrizedValue(127);
+
+            if(newVol != -1){
+                currentVolume = newVol;
+                analogVolume = currentVolume;
+                mode == Mode::MODULATED;
+            }
+        }
     }
 
     return currentVolume;
@@ -45,4 +68,12 @@ void VolumeProvider<MidiImpl>::sendAfterTouch()
 
     if(volumeRead != -1)
         this->midiImpl.sendAfterTouch(readVolume(), 1);
+}
+
+template<typename MidiImpl>
+void VolumeProvider<MidiImpl>::applyAppVolume(int newVol)
+{
+    this->currentVolume = newVol;
+    this->previousMode = this->mode;
+    this->mode = Mode::APP;
 }

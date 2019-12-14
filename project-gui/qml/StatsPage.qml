@@ -2,8 +2,12 @@ import Felgo 3.0
 import QtQuick 2.0
 import QtCharts 2.3
 
-Page {
+FlickablePage {
+    scrollIndicator.visible: true
+    flickable.contentHeight: column.height
+
     Column{
+        id: column
         anchors.centerIn: parent
         InfoLabel{
             id: mostPlayedNote
@@ -32,16 +36,16 @@ Page {
             width: Math.min( dp(700), parent.parent.width * 0.8)
             legend.visible: true
             antialiasing: true
-            animationOptions: ChartView.AllAnimations
+            //animationOptions: ChartView.AllAnimations
 
             PieSeries{
                 id: notesChart
                 holeSize: 0.25
 
                 function generateChart(data){
-                    data.forEach(function(e){
+                    data.forEach(e => {
 
-                        if(e.note == 0)
+                        if(e.note === 0)
                             return;
 
                         var slice = find(e.note);
@@ -60,7 +64,7 @@ Page {
         InfoLabel{
             id: volumeAverage
             fieldName: "Volumen usual: "
-            property var maxValues : 999999
+            property var maxValues : 10000
             property var values : []
             property var avgData : ({sum: 0, count: 0});
             function addValue(value){
@@ -72,12 +76,44 @@ Page {
                 change(Math.floor( values.reduce( (acc, val) => acc + val ) / values.length ));
             }
         }
+
+        ChartView{
+            height: dp(400)
+            width: Math.min( dp(700), parent.parent.width * 0.8)
+            antialiasing: true
+
+
+            SplineSeries{
+                name: "Historial Volumen"
+                id: volumeSeries
+                axisX: ValueAxis{
+                    min: 0
+                    max: 100
+                }
+                axisY: ValueAxis{
+                    min:0
+                    max:127
+                }
+                property int actualCount : 0
+                function addValue(val){
+                    if(volumeSeries.count > 100){
+                        removePoints(0,1);
+                        axisX.min++;
+                        axisX.max++;
+                    }
+                    actualCount++;
+                    append(actualCount,val);
+                }
+            }
+        }
+
     }
 
     Connections{
         target: udpSender
         onDataChange: {
             volumeAverage.addValue(volume)
+            volumeSeries.append(volumeSeries.count,volume)
             mostPlayedNote.addNote(currentNote)
         }
     }

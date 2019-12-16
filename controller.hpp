@@ -111,12 +111,16 @@ void MidiController<MidiImpl>::changeMode(char mode){
   else if(mode == '8'){
     this->noteProvider.incrementBaseNote();
   }
+  else if(mode == '6'){
+    this->noteProvider.decrementOctave();
+  }
+  else if(mode == '9'){
+    this->noteProvider.incrementOctave();
+  }
   else if(isdigit(mode)){
     this->noteProvider.setScale(mode - '0');
     this->screen.writeScaleChange(this->noteProvider.getScale().getName());
-  }
-
-  
+  }  
 
   this->mode = mode;
 }

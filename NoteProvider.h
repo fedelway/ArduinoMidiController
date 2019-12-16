@@ -31,6 +31,8 @@ public:
     Scale& getScale();
     void incrementBaseNote();
     void decrementBaseNote();
+    void incrementOctave();
+    void decrementOctave();
 };
 
 #endif //_NOTE_PROVIDER_DEFINED_

@@ -72,3 +72,15 @@ void NoteProvider::decrementBaseNote()
     if(baseNote > 0)
         baseNote--;
 }
+
+void NoteProvider::incrementOctave()
+{
+    if(baseNote + 12 < 127)
+        baseNote += 12;
+}
+
+void NoteProvider::decrementOctave()
+{
+    if(baseNote - 12 > 0)
+        baseNote -= 12;
+}

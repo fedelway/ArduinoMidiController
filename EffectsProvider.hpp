@@ -44,10 +44,16 @@ template<typename MidiImpl>
 void EffectsProvider<MidiImpl>::sendPitchBending()
 {
     long sensorRead = ping.readParametrizedValue(MIDI_PITCHBEND_MAX * 2);
+    static long previousSensorRead = -1;
+
+    if(sensorRead == -1 && previousSensorRead == -1)
+        return;
 
     if(sensorRead != -1){
+        previousSensorRead = sensorRead;
         this->midiImpl.sendPitchBend( (int)(sensorRead - MIDI_PITCHBEND_MAX), 1 );
     }else{
+        previousSensorRead = -1;
         this->midiImpl.sendPitchBend(0, 1);
     }
 }

@@ -70,7 +70,7 @@ void keypadEvent(KeypadEvent key){
 void testComponents()
 {
   lcd.home();
-  lcd.print("test right ping");
+  lcd.print("test left ping");
   while(true){
     auto value = ping.readParametrizedValue(10);
     if(value != -1)
@@ -78,7 +78,7 @@ void testComponents()
   }
 
   lcd.home();
-  lcd.print("test left ping");
+  lcd.print("test right ping");
   while(true){
     auto value = ping2.readParametrizedValue(10);
     if(value != -1)
